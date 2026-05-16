@@ -61,24 +61,22 @@ Identify:
 
 When all changes are coherent (e.g. all touching one module for one purpose), skip the split question and proceed directly to drafting.
 
-### Step 3 — Draft the commit message
-Write the commit message in English. Follow these rules:
+### Step 3 — Draft and execute
+Write the commit message in English, then commit immediately (no confirmation step).
 
 1. **Subject line**: `type(scope): short description` — max 72 chars, lowercase, no period at end
 2. **Blank line** after subject
 3. **Body**: Explain WHAT changed and WHY. Each line ≤72 chars. Can be multiple paragraphs separated by blank lines.
 
-### Step 4 — Confirm with user
-Use the `AskUserQuestion` tool to present the drafted commit message and ask the user to confirm. Single-select: "Approve" or "Edit". If the user chooses "Edit", ask what they want changed, revise, and re-confirm.
-
-### Step 5 — Execute
-Once confirmed:
+Then execute:
 ```bash
 git add <relevant files>  # Only the changed files, never -A or .
 git commit -m "<message>"
 ```
 
 **Do NOT push.** The user will push manually when ready.
+
+If the user disagrees with the message after the fact, they can `git commit --amend` to revise it.
 
 ## Examples
 
