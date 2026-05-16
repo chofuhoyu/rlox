@@ -1,0 +1,3 @@
+[workspace]
+members = ["rlox-walk", "rlox-byte"]
+resolver = "2"
