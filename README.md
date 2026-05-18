@@ -70,6 +70,21 @@ cargo test  # 在各自 crate 目录下
 - 测试全部用 Rust 重写，测试用例自行设计（可参考原书逻辑）
 - 每个 crate 有独立测试目录
 
+## AST 设计决策
+
+### rlox-walk：`enum` + `match`
+
+- AST 用 `enum Expr` / `enum Stmt`，各 variant 内联携带子节点（`Box<Expr>` / `Box<Stmt>`）
+- 不做 Arena、不生成代码、不用 Visitor trait——Rust 的 `match` 天然替代 Visitor 模式，省掉 `accept` / `visitXxx` 样板
+- Parser、Resolver、Interpreter 各自写各自的 `match`，类型定义集中、行为分散在各模块
+- 语义分析结果直接写在 variant 字段上（如 `Variable { depth: Option<usize> }`），`&mut` 串行传递，不需要 side table
+- 表达式类型封闭、操作频繁增加——这是 Rust `enum` 的天然优势场景
+
+### rlox-byte：不构建 AST
+
+- Pratt parser 直接 emit 字节码到 `Chunk`，中间不经过任何树结构
+- 与 clox 编译流程一致，无 `Expr` / `Stmt` 定义
+
 ## 书中章节映射
 
 | 章节 | 主题                | rlox-walk          | rlox-byte               |
